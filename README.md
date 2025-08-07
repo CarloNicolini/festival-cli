@@ -1,6 +1,16 @@
 # Festival Sokoban solver
 
 This project is a modern reimplementation and fork of the original [Festival solver](https://festival-solver.site/), with added support for Sokoban level descriptions in LURD (Left, Up, Right, Down) format.
+It saves the solution file in json format as
+
+```json
+{
+  "filename": "microban_I_000.sok",
+  "map": "####\n# .#\n#  ###\n#*@  #\n#  $ #\n#  ###\n####",
+  "lurd": "rdddlUrrrdLullddrUluRuulDrddrruLdlUU",
+  "elapsed": "0.01"
+}
+```
 
 ---
 
