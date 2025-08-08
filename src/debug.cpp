@@ -62,7 +62,7 @@ void print_node_advisors(tree* t, expansion_data* e)
 	mh = t->move_hashes + e->move_hash_place;
 	for (i = 0; i < e->moves_num; i++)
 	{
-		moves[i] = mh[i].move;
+		moves[i] = mh[i].move_data;
 		get_score_of_hash(t, mh[i].hash, scores + i);
 	}
 
@@ -152,7 +152,7 @@ void print_node(tree* t, expansion_data* e, int print_moves, const char* message
 		for (i = 0; i < moves_num; i++)
 		{
 			printf("%3d: ", i);
-			print_move(&(mh[i].move));
+			print_move(&(mh[i].move_data));
 
 			node_place = find_node_by_hash(t, mh[i].hash);
 			if (node_place == -1) exit_with_error("missing node");

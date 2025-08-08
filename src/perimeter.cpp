@@ -132,7 +132,7 @@ UINT_64 get_hash_without_bases(tree* t, expansion_data* e, int son)
 		return 0xffffffff;
 
 	bytes_to_board(e->b, b);
-	apply_move(b, &(mh[son].move), NORMAL);
+	apply_move(b, &(mh[son].move_data), NORMAL);
 
 	clear_bases_inplace(b);
 	return get_board_hash(b);
@@ -372,7 +372,7 @@ int check_if_perimeter_reached(tree *t, helper *h)
 			insert_all_tree_nodes_to_queues(t); // switching to FESS
 
 		e->weight = -2000 + (best_depth + 1); // +1 because of the played move
-		mh[best_son].move.attr.weight = -1;
+		mh[best_son].move_data.attr.weight = -1;
 		
 		set_best_move(t,e);
 		replace_in_queue(t, e);

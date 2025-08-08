@@ -49,7 +49,7 @@ int has_winning_move(tree *t, expansion_data *e, helper *h)
 	if (i == e->moves_num) return 0;
 
 	bytes_to_board(e->b, b);
-	apply_move(b, &mh[i].move, NORMAL);
+	apply_move(b, &mh[i].move_data, NORMAL);
 
 	// perturb the board a little to differentiate it from the actual root
 

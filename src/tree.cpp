@@ -275,7 +275,7 @@ void set_advisors_in_node(tree *t, expansion_data *e, helper *h)
 	mh = t->move_hashes + e->move_hash_place;
 	for (i = 0; i < e->moves_num; i++)
 	{
-		moves[i] = mh[i].move;
+		moves[i] = mh[i].move_data;
 		get_score_of_hash(t, mh[i].hash, scores + i);
 	}
 
@@ -342,7 +342,7 @@ void fill_expansion_structures(tree *t, expansion_data *e, helper *h)
 		apply_move(c, moves + i, t->search_mode);
 		hash = get_board_hash(c);
 
-		t->move_hashes[t->move_hashes_num + i].move = moves[i];
+		t->move_hashes[t->move_hashes_num + i].move_data = moves[i];
 		t->move_hashes[t->move_hashes_num + i].hash = hash;
 		t->move_hashes[t->move_hashes_num + i].deadlocked = 0;
 
@@ -394,12 +394,12 @@ void set_best_move(tree *t, expansion_data *e)
 			continue;
 		}
 
-		if (mh[i].move.attr.weight > best_weight) 
+		if (mh[i].move_data.attr.weight > best_weight) 
 			continue;
 
-		if (mh[i].move.attr.weight < best_weight)
+		if (mh[i].move_data.attr.weight < best_weight)
 		{
-			best_weight = mh[i].move.attr.weight;
+			best_weight = mh[i].move_data.attr.weight;
 			e->best_move = i;
 			best_score = n->score;
 			continue;
@@ -412,7 +412,7 @@ void set_best_move(tree *t, expansion_data *e)
 
 		if (is_better_score(&(n->score), &best_score, t->pull_mode, t->search_mode))
 		{
-			best_weight = mh[i].move.attr.weight;
+			best_weight = mh[i].move_data.attr.weight;
 			e->best_move = i;
 			best_score = n->score;
 			continue;
@@ -556,7 +556,7 @@ void expand_node(tree *t, expansion_data *e, int son, helper *h)
 		exit_with_error("max expansions reached");
 
 	bytes_to_board(e->b, b);
-	move_to_play = mh[son].move;
+	move_to_play = mh[son].move_data;
 	apply_move(b, &move_to_play, t->search_mode);
 	if (get_board_hash(b) != mh[son].hash) exit_with_error("hash error");
 
@@ -569,7 +569,7 @@ void expand_node(tree *t, expansion_data *e, int son, helper *h)
 		next->best_past = &(n->score);
 
 	next->label = -1;
-	next->weight = e->weight + mh[son].move.attr.weight;
+	next->weight = e->weight + mh[son].move_data.attr.weight;
 	next->depth  = e->depth + 1;
 	next->best_weight = 1000000;
 	next->best_move = -1;
@@ -615,7 +615,7 @@ void set_imagine_data_in_node(tree *t, expansion_data *e, helper *h)
 	mh = t->move_hashes + e->move_hash_place;
 	for (i = 0; i < e->moves_num; i++)
 	{
-		moves[i] = mh[i].move;
+		moves[i] = mh[i].move_data;
 		get_score_of_hash(t, mh[i].hash, scores + i);
 	}
 	
@@ -640,21 +640,21 @@ void set_weight_to_node_moves(tree *t, expansion_data *e, helper *h)
 
 	for (i = 0; i < e->moves_num; i++)
 	{
-		mh[i].move.attr.advisor = is_an_advisor(&(e->advisors), i);
-		mh[i].move.attr.weight = attr_to_weight(&mh[i].move.attr);
+		mh[i].move_data.attr.advisor = is_an_advisor(&(e->advisors), i);
+		mh[i].move_data.attr.weight = attr_to_weight(&mh[i].move_data.attr);
 	}
 
 	if (h->weighted_search == 0)
 		for (i = 0; i < e->moves_num; i++)
-			mh[i].move.attr.weight = 0;
+			mh[i].move_data.attr.weight = 0;
 
 	if (e->moves_num <= 2) 
-		mh[0].move.attr.weight = 0;
+		mh[0].move_data.attr.weight = 0;
 
 	if (h->perimeter_found)
 	{
 		for (i = 0; i < e->moves_num; i++)
-			mh[i].move.attr.weight = 1;
+			mh[i].move_data.attr.weight = 1;
 		// when loosing the perimeter, prefer early nodes
 	}
 
@@ -800,10 +800,10 @@ move get_move_to_node(tree *t, expansion_data *e)
 
 	for (i = 0; i < f->moves_num; i++)
 		if (mh[i].hash == e->node->hash)
-			return mh[i].move;
+			return mh[i].move_data;
 
 	exit_with_error("missing move");
-	return mh[0].move;
+	return mh[0].move_data;
 }
 
 void remove_son_from_tree(tree *t, expansion_data *e, int son)
@@ -891,7 +891,7 @@ expansion_data *last_expansion(tree *t)
 move *get_node_move(tree *t, expansion_data *e, int son)
 {
 	move_hash_data *mh = t->move_hashes + e->move_hash_place;
-	return &(mh[son].move);
+	return &(mh[son].move_data);
 }
 
 UINT_64 get_node_hash(tree *t, expansion_data *e, int son)

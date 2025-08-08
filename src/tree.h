@@ -12,7 +12,7 @@
 
 typedef struct move_hash_data
 {
-	move move;
+	move move_data;
 	UINT_64 hash;
 	char deadlocked;
 } move_hash_data;

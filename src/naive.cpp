@@ -15,7 +15,7 @@ void set_naive_data_in_node(tree *t, expansion_data *e, helper *h)
 	mh = t->move_hashes + e->move_hash_place;
 	for (i = 0; i < e->moves_num; i++)
 	{
-		moves[i] = mh[i].move;
+		moves[i] = mh[i].move_data;
 		get_score_of_hash(t, mh[i].hash, scores + i);
 	}
 	bytes_to_board(e->b, b);
