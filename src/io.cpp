@@ -340,7 +340,7 @@ void save_board_to_file(board b, FILE *fp)
 			if (b[i][j] == SOKOBAN) fprintf(fp, "@");
 			if (b[i][j] == (SOKOBAN | TARGET)) fprintf(fp, "+");
 		}
-		fprintf(fp, "\n");
+		fprintf(fp, "\\n");
 	}
 }
 

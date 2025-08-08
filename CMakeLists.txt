@@ -69,10 +69,5 @@ set(FESTIVAL_SRC_FILES
 )
 
 add_library(festival ${FESTIVAL_SRC_FILES})
-add_executable(fess ${FESTIVAL_MAIN_SRC})
-target_link_libraries(fess festival -pthread)
-
-# Add CLI executable
-set(FESS_CLI_SRC src/fess-cli.cpp src/cli_parser.cpp src/solver_lib.cpp)
-add_executable(fess-cli ${FESS_CLI_SRC})
+add_executable(fess-cli ${FESTIVAL_MAIN_SRC})
 target_link_libraries(fess-cli festival -pthread)

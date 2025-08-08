@@ -193,9 +193,7 @@ void write_solution_header()
 	fp = fopen(filename, "w");
 	if (fp)
 	{
-		fprintf(fp, "%s solution file\n", solver_name);
-		fprintf(fp, "===========================\n");
-		fprintf(fp, "Collection: %s\n", global_level_set_name);
+		fprintf(fp, "{\"filename\": \"%s\",\n", global_level_set_name);
 		fclose(fp);
 	}
 }
@@ -218,20 +216,10 @@ void save_level_to_solution_file(board b)
 	fp = fopen(filename, "a");
 	if (fp == NULL) return;
 
-	fprintf(fp, "\n");
-
-	if (strcmp(level_title, "None") == 0)
-	{
-		fprintf(fp, "Level %d\n", level_id);
-	}
-	else
-	{
-		fprintf(fp, "%s\n", level_title);
-	}
-	fprintf(fp, "\n");
+	fprintf(fp, "\"map\": \"");
 
 	save_board_to_file(b, fp);
-	fprintf(fp, "\n");
+	fprintf(fp, "\",\n");
 
 	fclose(fp);
 }
@@ -307,7 +295,7 @@ void save_sol_moves(helper *h)
 	fp = fopen(filename, "a");
 	if (fp == 0) return;
 
-	fprintf(fp, "Solution\n");
+	fprintf(fp, "\"solution\": \"");
 
 	sok_y = global_initial_sokoban_y;
 	sok_x = global_initial_sokoban_x;
@@ -346,7 +334,7 @@ void save_sol_moves(helper *h)
 		apply_move(b, &m, NORMAL);
 	}
 
-	fprintf(fp, "\n");
+	fprintf(fp, "\",");
 	fclose(fp);
 
 	free(buffer);
@@ -512,11 +500,9 @@ void save_times_to_solutions_file(int sol_time)
 	get_date_as_string(time, date);
 
 	fprintf(fp, "\n");
-	fprintf(fp, "Solver: %s", solver_name);
-	fprintf(fp, "\n");
-
-	fprintf(fp, "Solver time: %s\n", hms);
-	fprintf(fp, "Solver date: %s  %s\n", date, time);
+	fprintf(fp, "\"solver\": \"%s\",\n", solver_name);
+	fprintf(fp, "\"solver_time\": \"%s\",\n", hms);
+	fprintf(fp, "\"date\": \"%s  %s\"\n}", date, time);
 	fprintf(fp, "\n");
 	fclose(fp);
 }
