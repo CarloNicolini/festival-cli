@@ -71,3 +71,9 @@ set(FESTIVAL_SRC_FILES
 add_library(festival ${FESTIVAL_SRC_FILES})
 add_executable(fess-cli ${FESTIVAL_MAIN_SRC})
 target_link_libraries(fess-cli festival -pthread)
+
+# Increase main thread stack size on macOS (ld64 expects hex bytes, multiple of 4 KiB)
+if(APPLE)
+  # 0x4000000 = 64 MiB
+  target_link_options(fess-cli PRIVATE -Wl,-stack_size,0x8000000)
+endif()

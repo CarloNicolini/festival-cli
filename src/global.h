@@ -13,7 +13,7 @@
 
 #define SPACE 0
 
-#define MAX_SIZE 51
+#define MAX_SIZE 101
 #define MAX_BOXES 200
 
 #define MAX_SOL_LEN 1500
